@@ -10,3 +10,7 @@
 .col{
   flex-direction: column;
 }
+
+.poster{
+  max-width: 200px;
+}

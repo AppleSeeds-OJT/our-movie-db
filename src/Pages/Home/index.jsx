@@ -4,11 +4,12 @@ import service from "../../Services/service";
 
 function Home() {
   const [state, setState] = useState({
-    movies: [],
+    movies: []
   });
 
   useEffect(() => {
     service.query().then((results) => {
+        console.log(results.results);
       setState((state) => ({ ...state, movies: results.results }));
     });
   }, []);
@@ -20,6 +21,7 @@ function Home() {
         {state.movies.map((movie, index) => (
           <li key={index}>
             <div className="flex col">
+              <div><img className="poster" src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt=""/></div>
               <div>Movie Name: {movie.original_title}</div>
               <Plot movieId={movie.id} />
             </div>
