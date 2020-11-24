@@ -21,9 +21,8 @@ function Home() {
   });
 
   useEffect(() => {
-    service.query('latest').then((results) => {
-      console.log(results);
-      setState((state) => ({ ...state, movies: results }));
+    service.query('popular').then((results) => {
+      setState((state) => ({ ...state, movies: results.results }));
     });
   }, []);
 
