@@ -8,10 +8,13 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
   movieCard: {
-    minWidth: 275,
+    maxWidth: 200,
+    maxHeight: 300,
     border: 2,
-    marginBottom: 10,
-    backgroundImage: props => props.imgUrl
+    margin: '10px 5px',
+    backgroundImage: props => props.imgUrl,
+    backgroundSize: '100% 100%' ,
+    backgroundRepeat: 'no-repeat',
   },
   root: {
     minWidth: 275,
