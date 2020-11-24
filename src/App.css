@@ -11,10 +11,6 @@
   flex-direction: column;
 }
 
-.movie-card{
-  margin-bottom: 10px;
-}
-
 .poster{
   max-width: 200px;
 }

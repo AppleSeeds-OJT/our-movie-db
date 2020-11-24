@@ -7,29 +7,28 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
+  movieCard: {
+    minWidth: 275,
+    border: 2,
+    marginBottom: 10,
+    backgroundImage: props => props.imgUrl
+  },
   root: {
     minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
   },
   title: {
     fontSize: 14,
   },
   pos: {
     marginBottom: 12,
-  },
+  }
 });
 
-function MovieCard(props) {
-  console.log(props);
-  const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+  function MovieCard(props) {
+  const classes = useStyles(props);
 
   return (
-    <Card className="movie-card">
+    <Card className={classes.movieCard}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
         </Typography>
@@ -38,7 +37,6 @@ function MovieCard(props) {
         </Typography>
         {props.plot}
       </CardContent>
-      <img className="poster" src={props.imgUrl} alt=""/>
       <CardActions>
         <Button size="small">Learn More</Button>
       </CardActions>
