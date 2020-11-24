@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Plot from "../../Components/Plot/index"
 import service from "../../Services/service";
 
 function Home() {
@@ -8,15 +9,11 @@ function Home() {
 
   useEffect(() => {
     service.query().then((results) => {
-      //TODO: find a way to create a new "formattedMovies" array, that contains additional information from the OMDB, based on TMDB's top-20 movies' IDs.
-      // const formattedMovies = results.results.map(movie => {name: movie.original_title, plot: additionalMovieDetails(movie.id)})
-      // setState(state => ({ ...state, movies: formattedMovies }))
       setState((state) => ({ ...state, movies: results.results }));
     });
   }, []);
 
   function additionalMovieDetails(TMDBid) {
-    //this isn't working as planned... can't get the timing right... need to figure out how ASYNC & AWAIT can fix this...
     service.getExternalId(TMDBid)
       .then((res) => service.getById(res.imdb_id))
       .then((result) => console.log(result.Plot));
@@ -28,10 +25,10 @@ function Home() {
       <h2>Top 20 Movies from TMDB:</h2>
       <ul>
         {state.movies.map((movie, index) => (
-          <li>
-            <div className="flex col" key={index}>
+          <li key={index}>
+            <div className="flex col" >
               <div>Movie Name: {movie.original_title}</div>
-              <div>Movie Plot: {additionalMovieDetails(movie.id)}</div>
+              <Plot movieId={movie.id}/>
             </div>
           </li>
         ))}
