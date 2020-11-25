@@ -1,29 +1,52 @@
 import React, { useState, useEffect } from "react";
+import { Button } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
 import MovieCard from "../../Components/MovieCard/index";
-import Plot from "../../Components/Plot/index";
 import service from "../../Services/service";
 
+const useStyles = makeStyles((theme) => ({
+  cardContainer: {
+    display: `grid`,
+    gridTemplateColumns: `repeat(auto-fill, minmax(180px, 1fr))`,
+    gridAutoRows: `auto`,
+    gridGap: `1rem`,
+  },
+  queryType: {
+    marginBottom: 10
+  }
+}));
+
 function Home() {
+  const classes = useStyles();
   const [state, setState] = useState({
-    movies: []
+    movies: [],
+    moviesToShow: 'latest'
   });
 
   useEffect(() => {
-    service.query().then((results) => {
-      setState((state) => ({ ...state, movies: results.results }));
-    });
-  }, []);
+    async function getMovies(moviesToShow) {
+        const gottenMovies = await service.query(moviesToShow)
+        setState((state) => ({...state, movies: gottenMovies.results }));
+      } 
+      getMovies(state.moviesToShow);
+  }, [state.moviesToShow]);
 
-  const getImgUrl = (posterPath) => {
-      return `url(https://image.tmdb.org/t/p/original${posterPath})`
+  const moviesToShow = (param) => {
+    setState((state) => ({ ...state, moviesToShow: param }));
   }
 
   return (
     <div>
-      <h2>Top 20 Movies from TMDB:</h2>
+      <h2>Top 20 {state.moviesToShow} Movies from TMDB:</h2>
+      <div className={classes.queryType}>
+        <Button onClick={() => { moviesToShow('latest') }}variant="contained" color={state.moviesToShow === 'latest' ? "primary" : "default"}>Latest</Button>
+        <Button onClick={() => { moviesToShow('popular') }}variant="contained" color={state.moviesToShow === 'popular' ? "primary" : "default"}>Popular</Button>
+      </div>
+      <div className={classes.cardContainer}>
         {state.movies.map((movie, index) => (
-              <MovieCard name={movie.original_title} plot={<Plot movieId={movie.id} />} imgUrl={getImgUrl(movie.poster_path)} />
+          <MovieCard key={index} movieName={movie.original_title} />
         ))}
+      </div>
     </div>
   );
 }
