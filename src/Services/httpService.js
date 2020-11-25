@@ -4,12 +4,13 @@ export default {
     get
 }
 
-function get(API) {
-    return axios.get(API)
-        .then(res => {
-            return res.data
-        })
-        .catch(errFunc);
+async function get(API) {
+    try {
+        const fetchedResults = await axios.get(API)
+        return fetchedResults.data
+    } catch(err) {
+        errFunc(err)
+    }
 }
 
 function errFunc(err) {

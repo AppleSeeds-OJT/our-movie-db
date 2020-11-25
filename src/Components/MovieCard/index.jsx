@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   movieCard: {
+    height: 280,
     backgroundImage: (state) => state.imgUrl,
     backgroundRepeat: `no-repeat`,
     backgroundSize: `100% 100%`
