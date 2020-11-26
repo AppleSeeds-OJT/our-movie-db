@@ -31,6 +31,9 @@ function query(what) { // this fetches first 20 most popuplar movies from TMDB.
     // example API string for finding the 20 most popular movies, from the "discover" API:
     // https://api.themoviedb.org/3/discover/movie?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1
     return httpService.get(`${BASE_URL_TMDB}discover/movie/?api_key=${API_KEY_TMDB}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`);
+    } else if (what === 'trending'){
+    // example API string for weekly trending movie from TMDB: https://api.themoviedb.org/3/trending/movie/week?api_key=e5a2122bd03016f587131ffe3ecc2596
+        return httpService.get(`${BASE_URL_TMDB}trending/movie/week?api_key=${API_KEY_TMDB}`);
     }
 }
 
@@ -39,7 +42,7 @@ function query(what) { // this fetches first 20 most popuplar movies from TMDB.
 //     return httpService.get(`${BASE_URL_TMDB}movie/${TMDBid}/external_ids?api_key=${API_KEY_TMDB}`);
 // }
 
-function getMovieById(TMDBid) { // this fetches more movie details from OMDB, based on the IMDB-ID.
+function getMovieById(TMDBid) { // this fetches more movie details from TMDB, based on the TMDB-ID.
     // example API string by TMDB-ID: https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
     return httpService.get(`${BASE_URL_TMDB}movie/${TMDBid}?api_key=${API_KEY_TMDB}&language=en-US`);
 }

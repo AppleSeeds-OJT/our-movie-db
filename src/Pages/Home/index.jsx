@@ -35,16 +35,21 @@ function Home() {
     setState((state) => ({ ...state, moviesToShow: param }));
   }
 
+  const getReleaseYear = (releaseDate) => {
+    return releaseDate.slice(0,4)
+  }
+
   return (
     <div>
       <h2>Top 20 {state.moviesToShow} Movies from TMDB:</h2>
       <div className={classes.queryType}>
-        <Button onClick={() => { moviesToShow('latest') }}variant="contained" color={state.moviesToShow === 'latest' ? "primary" : "default"}>Latest</Button>
         <Button onClick={() => { moviesToShow('popular') }}variant="contained" color={state.moviesToShow === 'popular' ? "primary" : "default"}>Popular</Button>
+        <Button onClick={() => { moviesToShow('trending') }}variant="contained" color={state.moviesToShow === 'trending' ? "primary" : "default"}>Trending</Button>
+        <Button onClick={() => { moviesToShow('latest') }}variant="contained" color={state.moviesToShow === 'latest' ? "primary" : "default"}>Latest</Button>
       </div>
       <div className={classes.cardContainer}>
         {state.movies.map((movie, index) => (
-          <MovieCard key={index} movieId={movie.id} movieName={movie.original_title} posterPath={movie.poster_path} />
+          <MovieCard key={index} movieId={movie.id} movieReleaseYear={getReleaseYear(movie.release_date)} movieRating={movie.vote_average} movieName={movie.original_title} posterPath={movie.poster_path} />
         ))}
       </div>
     </div>

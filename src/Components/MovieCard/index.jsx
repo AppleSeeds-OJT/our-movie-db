@@ -1,54 +1,88 @@
 import React, { useState, useEffect } from "react";
 import { useHistory} from 'react-router-dom'
 import { makeStyles } from "@material-ui/core/styles";
+import {Card, Button} from "@material-ui/core";
+import StarIcon from '@material-ui/icons/Star';
 import service from "../../Services/service";
 
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import { FullscreenExit } from "@material-ui/icons";
-
 const useStyles = makeStyles({
-  movieCard: {
+  card: {
     height: 280,
+    transition: `transform 0.3s ease 0s`,
+    transformStyle: `preserve-3d`,
+    position: `relative`,
+    '&:hover': {
+      transform: `rotateY(180deg)`,
+    }
+  },
+  movieCard: {
+    display: `flex`,
+    alignItems: `center`,
+    justifyContent: `center`,
+    position: `absolute`,
+    borderRadius: `4px`,
+    width: `100%`,
+    height: `100%`,
     backgroundImage: (state) => state.imgUrl,
+    backfaceVisibility: `hidden`,
     backgroundRepeat: `no-repeat`,
     backgroundSize: `100% 100%`,
+  },
+  front: {
+  },
+  back: {
+    transform: `rotateY(180deg)`
+  },
+  title: {
+    backgroundColor: `aqua`,
+    width: `90%`,
+    position: `absolute`,
+    bottom: 0,
+    left: 0,
+    borderBottomLeftRadius: `4px`,
+    borderBottomRightRadius: `4px`,
+    textAlign: `center`,
+    whiteSpace: `nowrap`,
+    overflow: `hidden`,
+    textOverflow: `ellipsis`,
+    padding: `0px 10px 0px 10px`,
+    fontWeight: `500`
+  },
+  badges: {
+    position: `absolute`,
+    width: `94%`,
+    top: 10,
+    padding: `0px 5px 0px 5px`,
     display: `flex`,
-    flexDirection: `column`,
+    justifyContent: `space-between`,
+  },
+  badge: {
+    backgroundColor: `aqua`,
+    borderRadius: `4px`,
+    textAlign: `center`,
+    padding: `0px 5px 0px 5px`,
+    fontWeight: `500`
+  },
+  rating: {
+    display: `flex`,
     alignItems: `center`,
     justifyContent: `space-between`
   },
-  content: {
-    height: `60%`,
-    margin: `30px 5px 5px 5px`,
-    background: `rgba(255, 255, 255, 0.5)`,
-    borderRadius: 4,
-    padding: 5
+  star: {
+    color: `yellow`
   },
-  title: {
-    fontSize: 14,
-    fontWeight: `bold`
-  },
-  plot: {
-    background: `rgba(230, 200, 230, 0.5)`,
-    borderRadius: 4,
-    fontSize: `0.75rem`,
-    overflow: `hidden`,
-    textOverflow: `ellipsis`
-  },
-  pos: {
-    marginBottom: 12,
-  },
+  detailsBtn: {
+    '&:hover': {
+      color: `black`,
+      backgroundColor: `aqua`,
+      transform: `translateY(-2px)`
+    }
+  }
 });
 
 function MovieCard(props) {
   
   const [state, setState] = useState({
-    imdbId: null,
-    plot: null,
     imgUrl: null
   });
 
@@ -62,28 +96,37 @@ function MovieCard(props) {
     async function getMovieByName() {
       const gottenMovie = await service.getByMovieName(props.movieName);
       if (!gottenMovie.Poster) {
-        setState((state) => ({...state, imdbId: gottenMovie.id, plot: gottenMovie.Plot, imgUrl: getImgUrl(props.posterPath) }));
+        setState((state) => ({...state, imgUrl: getImgUrl(props.posterPath) }));
       } else {
-        setState((state) => ({...state, imdbId: gottenMovie.id, plot: gottenMovie.Plot, imgUrl: `url("${gottenMovie.Poster}")` }));
+        setState((state) => ({...state, imgUrl: `url("${gottenMovie.Poster}")` }));
       }
     } 
     getMovieByName();
   }, [props.movieName, props.posterPath]);
 
   return (
-    <Card className={classes.movieCard}>
-      <CardContent className={classes.content}>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          {props.movieName}
-        </Typography>
-        <Typography className={classes.plot}>
-          {state.plot}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button variant="contained" color="primary" size="small" onClick={() => history.push(`/movie/${props.movieId}`)}>Details</Button>
-      </CardActions>
-    </Card>
+    <div className={classes.card}>
+      <Card className={`${classes.movieCard} ${classes.front}`}>
+          <div className={classes.badges}>
+            <div className={classes.badge}>
+              {props.movieReleaseYear}
+            </div>
+            <div className={`${classes.badge} ${classes.rating}`}>
+              <StarIcon className={classes.star}></StarIcon>
+              {props.movieRating}
+            </div>
+          </div>
+          <div className={classes.title}>
+            {props.movieName}
+          </div>
+      </Card>
+      <Card className={`${classes.movieCard} ${classes.back}`}>
+          <Button className={classes.detailsBtn} variant="contained" color="primary" onClick={() => history.push(`/movie/${props.movieId}`)}>Details</Button>
+          <div className={classes.title}>
+            <div>{props.movieName}</div>
+          </div>
+      </Card>
+    </div>
   );
 }
 

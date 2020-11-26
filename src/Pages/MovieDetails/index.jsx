@@ -17,6 +17,10 @@ function MovieDetails() {
     getMovieById(id);
   }, [id]);
 
+  //TODO:
+  // add "available to watch on:" by using https://api.themoviedb.org/3/movie/581392/watch/providers?api_key=e5a2122bd03016f587131ffe3ecc2596
+  // add reviews by using: https://api.themoviedb.org/3/movie/581392/reviews?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&page=1
+  
   return (
     <div>
       {state.currMovie && <div>
