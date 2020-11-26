@@ -20,7 +20,7 @@ function Home() {
   const classes = useStyles();
   const [state, setState] = useState({
     movies: [],
-    moviesToShow: 'latest'
+    moviesToShow: 'popular'
   });
 
   useEffect(() => {
@@ -44,7 +44,7 @@ function Home() {
       </div>
       <div className={classes.cardContainer}>
         {state.movies.map((movie, index) => (
-          <MovieCard key={index} movieName={movie.original_title} />
+          <MovieCard key={index} movieId={movie.id} movieName={movie.original_title} posterPath={movie.poster_path} />
         ))}
       </div>
     </div>
