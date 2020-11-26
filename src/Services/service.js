@@ -2,6 +2,7 @@ import httpService from './httpService.js';
 
 export default {
     query,
+    getMovieById,
     getByMovieName
     // getById,
     // getExternalId
@@ -38,7 +39,12 @@ function query(what) { // this fetches first 20 most popuplar movies from TMDB.
 //     return httpService.get(`${BASE_URL_TMDB}movie/${TMDBid}/external_ids?api_key=${API_KEY_TMDB}`);
 // }
 
-// function getById(IMDBid) { // this fetches more movie details from OMDB, based on the IMDB-ID.
+function getMovieById(TMDBid) { // this fetches more movie details from OMDB, based on the IMDB-ID.
+    // example API string by TMDB-ID: https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
+    return httpService.get(`${BASE_URL_TMDB}movie/${TMDBid}?api_key=${API_KEY_TMDB}&language=en-US`);
+}
+
+// function getMovieById(IMDBid) { // this fetches more movie details from OMDB, based on the IMDB-ID.
 //     // example API string by IMDB-ID: http://www.omdbapi.com/?i=tt3896198&apikey=9fadc571
 //     return httpService.get(`${BASE_URL_OMDB}?i=${IMDBid}&apikey=${API_KEY_OMDB}`);
 // }
