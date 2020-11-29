@@ -3,7 +3,8 @@ import httpService from './httpService.js';
 export default {
     query,
     getMovieById,
-    getByMovieName
+    getByMovieName,
+    getFiveRandomMovies
     // getById,
     // getExternalId
 }
@@ -58,3 +59,24 @@ function getByMovieName(movieName) { // this fetches more movie details from OMD
     const formattedMovieName = movieName.split(' ').join('+'); 
     return httpService.get(`${BASE_URL_OMDB}?t=${formattedMovieName}&apikey=${API_KEY_OMDB}`);
 }
+
+
+function getFiveRandomMovies(moviesArr) {
+    const originalMoviesArr = [...moviesArr];
+    debugger
+    const fiveRandomMovies = new Set;
+    while (fiveRandomMovies.length < 5) {
+        const randomMovie = originalMoviesArr[Math.floor(Math.random() * originalMoviesArr.length)];
+        fiveRandomMovies.push(randomMovie);
+    }
+    // const originalMoviesArr = [...moviesArr];
+    // const fiveRandomMovies = []; //convert this into "sets", and add randomMovie to this array while this array is less than 5 items long.
+    // for (const i = 0; i < 5; i++) {
+    //     // const randomMovie = originalMoviesArr[Math.floor(Math.random() * originalMoviesArr.length)];
+    //     const randomMovieIdx = Math.floor(Math.random() * originalMoviesArr.length);
+    //     fiveRandomMovies.push(originalMoviesArr[randomMovieIdx]);
+    //     originalMoviesArr.splice(randomMovieIdx,1);
+    //     console.log(originalMoviesArr);
+    // }
+    return fiveRandomMovies;
+} 
