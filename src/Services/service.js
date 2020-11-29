@@ -18,13 +18,15 @@ const API_KEY_OMDB = '9fadc571';
 const BASE_URL_TMDB = 'https://api.themoviedb.org/3/';
 // const BASE_URL_TMDB = 'https://api.themoviedb.org/3/discover/movie';
 // OMDB base API
-const BASE_URL_OMDB = `http://www.omdbapi.com/`;
+const BASE_URL_OMDB = 'http://www.omdbapi.com/';
 
 function query(what) { // this fetches first 20 most popuplar movies from TMDB.
     // example API string for finding the 20 most recent movies released, from the "discover" API: 
     // https://api.themoviedb.org/3/discover/movie?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&sort_by=primary_release_date.desc&include_adult=false&include_video=false&page=1
     if (what === 'latest') {
-        return httpService.get(`${BASE_URL_TMDB}discover/movie/?api_key=${API_KEY_TMDB}&language=en-US&sort_by=release_date.desc&include_adult=false&include_video=false&page=1`);
+        //return httpService.get(`${BASE_URL_TMDB}discover/movie/?api_key=${API_KEY_TMDB}&language=en-US&sort_by=release_date.desc&include_adult=false&include_video=false&page=1`);
+       //https://api.themoviedb.org/3/movie/now_playing?api_key=<<api_key>>&language=en-US&page=1&region=ISR
+         return httpService.get(`${BASE_URL_TMDB}movie/now_playing?api_key=${API_KEY_TMDB}&language=en-US&page=1&region=US`);
     } else if (what === 'popular') {
     // example API string for finding the 20 most popular movies, from the "popular" API:
     // return httpService.get(`${BASE_URL_TMDB}movie/${what}?api_key=${API_KEY_TMDB}&language=en-US&page=1`);
@@ -62,21 +64,12 @@ function getByMovieName(movieName) { // this fetches more movie details from OMD
 
 
 function getFiveRandomMovies(moviesArr) {
-    const originalMoviesArr = [...moviesArr];
-    debugger
-    const fiveRandomMovies = new Set;
-    while (fiveRandomMovies.length < 5) {
-        const randomMovie = originalMoviesArr[Math.floor(Math.random() * originalMoviesArr.length)];
-        fiveRandomMovies.push(randomMovie);
+    const fiveRandomMovies = new Set();
+    const isNotFiveMovies = fiveRandomMovies.size < 5;
+    while (isNotFiveMovies) {
+        const randomMovieIndex = Math.floor(Math.random() * moviesArr.length)
+        const randomMovie = moviesArr[randomMovieIndex];
+        fiveRandomMovies.add(randomMovie);
     }
-    // const originalMoviesArr = [...moviesArr];
-    // const fiveRandomMovies = []; //convert this into "sets", and add randomMovie to this array while this array is less than 5 items long.
-    // for (const i = 0; i < 5; i++) {
-    //     // const randomMovie = originalMoviesArr[Math.floor(Math.random() * originalMoviesArr.length)];
-    //     const randomMovieIdx = Math.floor(Math.random() * originalMoviesArr.length);
-    //     fiveRandomMovies.push(originalMoviesArr[randomMovieIdx]);
-    //     originalMoviesArr.splice(randomMovieIdx,1);
-    //     console.log(originalMoviesArr);
-    // }
     return fiveRandomMovies;
 } 
