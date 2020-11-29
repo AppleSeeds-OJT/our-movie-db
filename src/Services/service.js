@@ -62,6 +62,7 @@ function getByMovieName(movieName) { // this fetches more movie details from OMD
     return httpService.get(`${BASE_URL_OMDB}?t=${formattedMovieName}&apikey=${API_KEY_OMDB}`);
 }
 
+
 function getFiveRandomMovies(moviesArr) {
     const fiveRandomMovies = new Set();
     const isNotFiveMovies = fiveRandomMovies.size < 5;
