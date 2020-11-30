@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Button } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import MovieCard from "../../Components/MovieCard/index";
-// import NowPlayingCarousel from "../../Components/NowPlayingCarousel/index";
+import NowPlayingCarousel from "../../Components/NowPlayingCarousel/index";
 import service from "../../Services/service";
 
 const useStyles = makeStyles((theme) => ({
+  intro: {
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`
+  },
+  title: {
+    color: `white`
+  },
   cardContainer: {
     display: `grid`,
     gridTemplateColumns: `repeat(auto-fill, minmax(180px, 1fr))`,
@@ -13,7 +21,22 @@ const useStyles = makeStyles((theme) => ({
     gridGap: `1rem`,
   },
   queryType: {
-    marginBottom: 10
+    width: `25%`,
+    display: `flex`,
+    justifyContent: `space-between`,
+    margin: `10px 0`
+  },
+  queryBtn: {
+    cursor: `pointer`,
+    color: `white`,
+    border: `1px solid aqua`,
+    padding: `5px 10px`,
+    transition: `all .3s`,
+    '&:hover': {
+      color: `black`,
+      backgroundColor: `aqua`,
+      transition: `all .3s`
+    }
   }
 }));
 
@@ -42,16 +65,16 @@ function Home() {
 
   return (
     <div>
-
-    {/* <NowPlayingCarousel/> */}
-
-
+      <NowPlayingCarousel/>
       <div>
-        <h2>Top 20 {state.moviesToShow} Movies from TMDB:</h2>
-        <div className={classes.queryType}>
-          <Button onClick={() => { moviesToShow('popular') }} variant="contained" color={state.moviesToShow === 'popular' ? "primary" : "default"}>Popular</Button>
-          <Button onClick={() => { moviesToShow('trending') }} variant="contained" color={state.moviesToShow === 'trending' ? "primary" : "default"}>Trending</Button>
-          <Button onClick={() => { moviesToShow('latest') }} variant="contained" color={state.moviesToShow === 'latest' ? "primary" : "default"}>Latest</Button>
+        <div className={classes.intro}>
+          <Box className={classes.title} fontSize="h4.fontSize" fontWeight="fontWeightBold">Welcome to Our Movie Database</Box>
+          <Box fontSize="h5.fontSize" fontWeight="fontWeightBold">Discover and Watch</Box>
+          <div className={classes.queryType}>
+            <div className={classes.queryBtn} onClick={() => { moviesToShow('popular') }} style={ state.moviesToShow === 'popular' ? {backgroundColor:'aqua', color: 'black'} : {}}>Popular</div>
+            <div className={classes.queryBtn} onClick={() => { moviesToShow('trending') }} style={ state.moviesToShow === 'trending' ? {backgroundColor:'aqua', color: 'black'} : {}}>Trending</div>
+            <div className={classes.queryBtn} onClick={() => { moviesToShow('latest') }} style={ state.moviesToShow === 'latest' ? {backgroundColor:'aqua', color: 'black'} : {}}>Latest</div>
+          </div>
         </div>
         <div className={classes.cardContainer}>
           {state.movies.map((movie, index) => (

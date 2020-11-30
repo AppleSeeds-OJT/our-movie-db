@@ -1,4 +1,9 @@
 .App {
-  height: 100vh;
+  height: 100%;
   padding: 20px;
+  background-color: #524763;
+}
+
+.carousel.carousel-slider .control-arrow:hover {
+  background: none !important;
 }

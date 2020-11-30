@@ -63,13 +63,28 @@ function getByMovieName(movieName) { // this fetches more movie details from OMD
 }
 
 
+// function getFiveRandomMovies(moviesArr) { // the "While loop" kills it !
+//     const fiveRandomMovies = new Set();
+//     const isNotFiveMovies = fiveRandomMovies.size < 5;
+//     while (isNotFiveMovies) {
+//         const randomMovieIndex = Math.floor(Math.random() * moviesArr.length)
+//         const randomMovie = moviesArr[randomMovieIndex];
+//         fiveRandomMovies.add(randomMovie);
+//     }
+//     return fiveRandomMovies;
+// } 
+
 function getFiveRandomMovies(moviesArr) {
-    const fiveRandomMovies = new Set();
-    const isNotFiveMovies = fiveRandomMovies.size < 5;
-    while (isNotFiveMovies) {
-        const randomMovieIndex = Math.floor(Math.random() * moviesArr.length)
-        const randomMovie = moviesArr[randomMovieIndex];
-        fiveRandomMovies.add(randomMovie);
+    const originalMoviesArr = [...moviesArr];
+    const fiveRandomMovies = []; 
+    for (let i = 0; i < 5; i++) {
+        const randomMovieIdx = Math.floor(Math.random() * originalMoviesArr.length);
+        fiveRandomMovies.push(originalMoviesArr[randomMovieIdx]);
+        originalMoviesArr.splice(randomMovieIdx,1);
     }
-    return fiveRandomMovies;
+    return fiveRandomMovies
 } 
+
+// function getFiveRandomMovies(moviesArr) {
+//     return moviesArr.slice(0,5);
+// } 
