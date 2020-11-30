@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Box } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
+import Navbar from "../../Components/Navbar/index";
 import MovieCard from "../../Components/MovieCard/index";
 import NowPlayingCarousel from "../../Components/NowPlayingCarousel/index";
 import service from "../../Services/service";
 
 const useStyles = makeStyles((theme) => ({
   intro: {
+    marginBottom: 20,
     display: `flex`,
     flexDirection: `column`,
     alignItems: `center`
   },
   title: {
-    color: `white`
+    color: `white`,
+    marginTop: 20
+  },
+  subtitle: {
+    color: `aqua`
   },
   cardContainer: {
+    padding: 20,
     display: `grid`,
     gridTemplateColumns: `repeat(auto-fill, minmax(180px, 1fr))`,
     gridAutoRows: `auto`,
@@ -24,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     width: `25%`,
     display: `flex`,
     justifyContent: `space-between`,
-    margin: `10px 0`
+    margin: `20px 0`
   },
   queryBtn: {
     cursor: `pointer`,
@@ -65,11 +72,12 @@ function Home() {
 
   return (
     <div>
-      <NowPlayingCarousel/>
+      <Navbar />
+      <NowPlayingCarousel />
       <div>
         <div className={classes.intro}>
           <Box className={classes.title} fontSize="h4.fontSize" fontWeight="fontWeightBold">Welcome to Our Movie Database</Box>
-          <Box fontSize="h5.fontSize" fontWeight="fontWeightBold">Discover and Watch</Box>
+          <Box className={classes.subtitle} fontSize="h5.fontSize" fontWeight="fontWeightMedium">Discover and Watch</Box>
           <div className={classes.queryType}>
             <div className={classes.queryBtn} onClick={() => { moviesToShow('popular') }} style={ state.moviesToShow === 'popular' ? {backgroundColor:'aqua', color: 'black'} : {}}>Popular</div>
             <div className={classes.queryBtn} onClick={() => { moviesToShow('trending') }} style={ state.moviesToShow === 'trending' ? {backgroundColor:'aqua', color: 'black'} : {}}>Trending</div>

@@ -2,9 +2,10 @@ import httpService from './httpService.js';
 
 export default {
     query,
-    getMovieById,
+    getById,
     getByMovieName,
-    getFiveRandomMovies
+    getFiveRandomMovies,
+    searchByKeyword
     // getById,
     // getExternalId
 }
@@ -45,10 +46,16 @@ function query(what) { // this fetches first 20 most popuplar movies from TMDB.
 //     return httpService.get(`${BASE_URL_TMDB}movie/${TMDBid}/external_ids?api_key=${API_KEY_TMDB}`);
 // }
 
-function getMovieById(TMDBid) { // this fetches more movie details from TMDB, based on the TMDB-ID.
-    // example API string by TMDB-ID: https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
-    return httpService.get(`${BASE_URL_TMDB}movie/${TMDBid}?api_key=${API_KEY_TMDB}&language=en-US`);
+function getById(what, id) { // this fetches more movie/actor details from TMDB, based on the ID.
+    if (what === 'movie') {
+        // example API string of movie by TMDB-ID: https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
+        return httpService.get(`${BASE_URL_TMDB}movie/${id}?api_key=${API_KEY_TMDB}&language=en-US`);
+    } else if (what === 'actor'){
+        // example API of actor by ID: https://api.themoviedb.org/3/person/{person_id}?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US
+        return httpService.get(`${BASE_URL_TMDB}person/${id}?api_key=${API_KEY_TMDB}&language=en-US`);
+    } 
 }
+
 
 // function getMovieById(IMDBid) { // this fetches more movie details from OMDB, based on the IMDB-ID.
 //     // example API string by IMDB-ID: http://www.omdbapi.com/?i=tt3896198&apikey=9fadc571
@@ -56,10 +63,23 @@ function getMovieById(TMDBid) { // this fetches more movie details from TMDB, ba
 // }
 
 function getByMovieName(movieName) { // this fetches more movie details from OMDB, based on the movie's name.
-    // example API string by movie name: http://www.omdbapi.com/?t=avatar+5&apikey=9fadc571
+// example API string by movie name: http://www.omdbapi.com/?t=avatar+5&apikey=9fadc571
     // first need to format the string the way that OMDB expects it:
     const formattedMovieName = movieName.split(' ').join('+'); 
     return httpService.get(`${BASE_URL_OMDB}?t=${formattedMovieName}&apikey=${API_KEY_OMDB}`);
+}
+
+function searchByKeyword(what, keyword){
+    // *** maybe: we should fetch results for both people AND moves separately, and then construct the results such that if there are people, then show some of them first, and then show movies...
+    if (what === 'actors') {
+        // https://api.themoviedb.org/3/search/person?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&query=adam&page=1&include_adult=false <-- searches in People
+        return httpService.get(`${BASE_URL_TMDB}search/person?api_key=${API_KEY_TMDB}&language=en-US&query=${keyword}&page=1&include_adult=false`);
+    } else if (what === 'movies') {
+        // https://api.themoviedb.org/3/search/keyword?api_key=e5a2122bd03016f587131ffe3ecc2596&query=as&page=1 <-- searches in Movies
+        return httpService.get(`${BASE_URL_TMDB}search/keyword?api_key=${API_KEY_TMDB}&query=${keyword}&page=1`);
+    }
+    // https://api.themoviedb.org/3/search/multi?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&query=adam%20sandler&page=1&include_adult=false <-- searches "multi" (TV/movies/actors)
+    // return httpService.get(`${BASE_URL_TMDB}search/multi?api_key=${API_KEY_TMDB}&language=en-US&query=${keyword}&page=1&include_adult=false`);
 }
 
 
@@ -84,7 +104,3 @@ function getFiveRandomMovies(moviesArr) {
     }
     return fiveRandomMovies
 } 
-
-// function getFiveRandomMovies(moviesArr) {
-//     return moviesArr.slice(0,5);
-// } 
