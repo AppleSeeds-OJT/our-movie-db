@@ -10,11 +10,11 @@ function MovieDetails() {
   });
 
   useEffect(() => {
-    async function getMovieById(tmdbMovieId) {
-      const gottenMovie = await service.getMovieById(tmdbMovieId);
+    async function getMovieById(what, tmdbMovieId) {
+      const gottenMovie = await service.getById(what, tmdbMovieId);
       setState((state) => ({...state, currMovie: gottenMovie }));
     } 
-    getMovieById(id);
+    getMovieById('movie', id);
   }, [id]);
 
   //TODO:
