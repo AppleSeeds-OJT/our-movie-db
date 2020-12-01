@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     realTimeSearchRes: {
         position: `absolute`,
         width: 200,
-        border: `2px solid blue`
+        backgroundColor: `#524763`,
     }
 }));
 
@@ -65,11 +65,11 @@ const setSearchTerm = (term) => {
             <input type="submit" value="Submit" />
         </form>
         {state.searchHits.length > 0 && <div className={classes.realTimeSearchRes}>
-            <ul>{state.searchHits.map((hit, index) => (
-                <li key={index} >
+            <div>{state.searchHits.map((hit, index) => (
+                <div key={index} >
                     <HitPreview isMovie={(!hit.gender) ? true : false} hitId={hit.id}/>
-                </li>
-            ))}</ul>
+                </div>
+            ))}</div>
         </div>}
     </div>
   );
