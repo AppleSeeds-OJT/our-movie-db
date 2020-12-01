@@ -81,14 +81,11 @@ const useStyles = makeStyles({
 });
 
 function MovieCard(props) {
-  
   const [state, setState] = useState({
+    imdbId: null,
     imgUrl: null
   });
 
-  const getImgUrl = (posterPath) => {
-    return `url(https://image.tmdb.org/t/p/original${posterPath})`
-  }
   const history = useHistory();
   const classes = useStyles(state);
   
@@ -98,22 +95,17 @@ function MovieCard(props) {
       const imdbId = gottenMovieId.imdb_id;
       const gottenMovie = await service.getMovieFromOMDBByIMDBId(imdbId);
       if (gottenMovie.Poster) {
-        setState((state) => ({...state, imgUrl: `url("${gottenMovie.Poster}")` }));
+        setState((state) => ({...state, imdbId, imgUrl: `url("${gottenMovie.Poster}")` }));
       } else {
-        setState((state) => ({...state, imgUrl: getImgUrl(props.posterPath) }));
+        setState((state) => ({...state, imdbId, imgUrl: getImgUrl(props.posterPath) }));
       }
     } 
     getByExternalId(props.movieId);
-    // async function getMovieByName() {
-    //   const gottenMovie = await service.getByMovieName(props.movieName);
-    //   if (!gottenMovie.Poster) {
-    //     setState((state) => ({...state, imgUrl: getImgUrl(props.posterPath) }));
-    //   } else {
-    //     setState((state) => ({...state, imgUrl: `url("${gottenMovie.Poster}")` }));
-    //   }
-    // } 
-    // getMovieByName();
   }, [props.movieName, props.posterPath]);
+
+  const getImgUrl = (posterPath) => {
+    return `url(https://image.tmdb.org/t/p/original${posterPath})`
+  }
 
   return (
     <div className={classes.card}>
@@ -132,7 +124,7 @@ function MovieCard(props) {
           </div>
       </Card>
       <Card className={`${classes.movieCard} ${classes.back}`}>
-          <Button className={classes.detailsBtn} variant="contained" color="primary" onClick={() => history.push(`/movie/${props.movieId}`)}>Details</Button>
+          <Button className={classes.detailsBtn} variant="contained" color="primary" onClick={() => history.push(`/movie/${state.imdbId}`)}>Details</Button>
           <div className={classes.title}>
             <div>{props.movieName}</div>
           </div>

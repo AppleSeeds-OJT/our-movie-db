@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Box } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
-import Navbar from "../../Components/Navbar/index";
 import MovieCard from "../../Components/MovieCard/index";
 import NowPlayingCarousel from "../../Components/NowPlayingCarousel/index";
 import service from "../../Services/service";
 
 const useStyles = makeStyles((theme) => ({
+  homePage: {
+    marginTop: 40,
+  },
   intro: {
     marginBottom: 20,
     display: `flex`,
@@ -71,8 +73,7 @@ function Home() {
   }
 
   return (
-    <div>
-      <Navbar />
+    <div className={classes.homePage}>
       <NowPlayingCarousel />
       <div>
         <div className={classes.intro}>

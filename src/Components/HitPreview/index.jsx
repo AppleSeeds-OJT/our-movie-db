@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory} from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import StarIcon from '@material-ui/icons/Star';
@@ -8,6 +9,7 @@ import service from "../../Services/service";
 
 const useStyles = makeStyles((theme) => ({
     hit: {
+        cursor: `pointer`,
         border: `1px solid white`,
         color: `white`
     },
@@ -42,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Search(props) {
   const classes = useStyles();
+  const history = useHistory();
 
   const [state, setState] = useState({
     isMovie: null,  
@@ -55,10 +58,8 @@ function Search(props) {
         if (isMovie) {
             setState((state) => ({ ...state, currItem: movieInfo }));
         } else if (!isMovie) {
-            console.log('fetching this actorId: ', id);
             gottenItem = await service.getById('actor',id);
             if (!gottenItem) console.log('this actorItem could not be fetched: ', id);
-            console.log('this is the gottenItem: ', gottenItem);
             setState((state) => ({ ...state, currItem: gottenItem }));
         }
       }
@@ -69,23 +70,31 @@ function Search(props) {
     return `https://image.tmdb.org/t/p/original${imgPath}`;
   };
 
-  const getProfession = (term) => {
+  const getProfession = (term) => { // may need to add more
     switch(term){
         case 'Acting':
             return 'Actor'
-            break;
-            case 'Directing':
+        case 'Directing':
             return 'Director'
-            break;
-            case 'Producing':
+        case 'Producing':
             return 'Producer'
-            break;
+        default:
+            return 'other'
     }
   }
 
+  const selectAndClearSearch = (what, id) => {
+    props.onClearSearch();
+    if (what === 'movie') {
+        history.push(`/movie/${id}`)
+    } else {
+        history.push(`/actor/${id}`)
+    }  
+}
+
   return (
     <div className={classes.hit}>
-        {(state.currItem && state.isMovie) && <div className={classes.flex}>
+        {(state.currItem && state.isMovie) && <div className={classes.flex} onClick={() => selectAndClearSearch('movie', state.currItem.imdbID)}>
             <img className={classes.image} src={state.currItem.Poster} alt="" />
             <div className={classes.details}>   
                 <Box className={classes.title} fontSize={14} textAlign="left">{state.currItem.Title}</Box>
@@ -99,7 +108,7 @@ function Search(props) {
                 </div>
             </div>
         </div>} 
-        {(state.currItem && !state.isMovie) && <div className={classes.flex}>
+        {(state.currItem && !state.isMovie) && <div className={classes.flex} onClick={() => selectAndClearSearch('actor', state.currItem.id)}>
             <img className={classes.image} src={getImgUrl(state.currItem.profile_path)} alt="" />
             <div className={classes.details}>   
                 <Box fontSize={14} textAlign="left">{state.currItem.name}</Box>

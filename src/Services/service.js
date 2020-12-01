@@ -4,11 +4,11 @@ export default {
     query,
     getById,
     getByMovieName,
-    getFiveRandomMovies,
     searchByKeyword,
     getExternalId,
-    getMovieFromOMDBByIMDBId
-    // getById,
+    getMovieFromOMDBByIMDBId,
+    getFiveRandomMovies,
+    getImages
 }
 
 // ohad's TMDB API Key:
@@ -49,12 +49,17 @@ function getExternalId(TMDBid) { // this fetches the IMDB-ID of a specific movie
 
 function getById(what, id) { // this fetches more movie/actor details from TMDB, based on the ID.
     if (what === 'movie') {
-        // example API string of movie by TMDB-ID: https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
+        // example API string of movie by TMDB-ID: https://api.themoviedb.org/3/movie/682377?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US
         return httpService.get(`${BASE_URL_TMDB}movie/${id}?api_key=${API_KEY_TMDB}&language=en-US`);
     } else if (what === 'actor'){
-        // example API of actor by ID: https://api.themoviedb.org/3/person/{person_id}?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US
+        // example API of actor by ID: https://api.themoviedb.org/3/person/11662?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US
         return httpService.get(`${BASE_URL_TMDB}person/${id}?api_key=${API_KEY_TMDB}&language=en-US`);
     } 
+}
+
+function getImages(TMDBid){
+    // example API from TMDB: https://api.themoviedb.org/3/person/11662/images?api_key=e5a2122bd03016f587131ffe3ecc2596
+    return httpService.get(`${BASE_URL_TMDB}person/${TMDBid}/images?api_key=${API_KEY_TMDB}`);
 }
 
 function getMovieFromOMDBByIMDBId(IMDBid) { // this fetches more movie details from OMDB, based on the IMDB-ID.
@@ -74,19 +79,19 @@ function getByMovieName(movieName) { // this fetches more movie details from OMD
 }
 
 function searchByKeyword(what, keyword){
+    const formattedKeyword = keyword.split(' ').join('%20');
     // *** maybe: we should fetch results for both people AND moves separately, and then construct the results such that if there are people, then show some of them first, and then show movies...
     if (what === 'actors') {
-        // https://api.themoviedb.org/3/search/person?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&query=adam&page=1&include_adult=false <-- searches in People
-        return httpService.get(`${BASE_URL_TMDB}search/person?api_key=${API_KEY_TMDB}&language=en-US&query=${keyword}&page=1&include_adult=false`);
+        // https://api.themoviedb.org/3/search/person?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&query=robert%20pattinson&page=1&include_adult=false <-- searches in People
+        return httpService.get(`${BASE_URL_TMDB}search/person?api_key=${API_KEY_TMDB}&language=en-US&query=${formattedKeyword}&page=1&include_adult=false`);
     } else if (what === 'movies') {
         // // https://api.themoviedb.org/3/search/keyword?api_key=e5a2122bd03016f587131ffe3ecc2596&query=as&page=1 <-- searches in Movies, but TMDB provies very poor results...
-        // return httpService.get(`${BASE_URL_TMDB}search/keyword?api_key=${API_KEY_TMDB}&query=${keyword}&page=1`);
+        // return httpService.get(`${BASE_URL_TMDB}search/keyword?api_key=${API_KEY_TMDB}&query=${formattedKeyword}&page=1`);
         // http://www.omdbapi.com/?s=Batman&apikey=9fadc571&page=1 <-- so going with the OMDB movieFinder option
-        return httpService.get(`${BASE_URL_OMDB}?s=${keyword}&apikey=${API_KEY_OMDB}&page=1`);
-
+        return httpService.get(`${BASE_URL_OMDB}?s=${formattedKeyword}&apikey=${API_KEY_OMDB}&page=1`);
     }
     // https://api.themoviedb.org/3/search/multi?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&query=adam%20sandler&page=1&include_adult=false <-- searches "multi" (TV/movies/actors)
-    // return httpService.get(`${BASE_URL_TMDB}search/multi?api_key=${API_KEY_TMDB}&language=en-US&query=${keyword}&page=1&include_adult=false`);
+    // return httpService.get(`${BASE_URL_TMDB}search/multi?api_key=${API_KEY_TMDB}&language=en-US&query=${formattedKeyword}&page=1&include_adult=false`);
 }
 
 
