@@ -93,15 +93,26 @@ function MovieCard(props) {
   const classes = useStyles(state);
   
   useEffect(() => {
-    async function getMovieByName() {
-      const gottenMovie = await service.getByMovieName(props.movieName);
-      if (!gottenMovie.Poster) {
-        setState((state) => ({...state, imgUrl: getImgUrl(props.posterPath) }));
-      } else {
+    async function getByExternalId(id) {
+      const gottenMovieId = await service.getExternalId(id);
+      const imdbId = gottenMovieId.imdb_id;
+      const gottenMovie = await service.getMovieFromOMDBByIMDBId(imdbId);
+      if (gottenMovie.Poster) {
         setState((state) => ({...state, imgUrl: `url("${gottenMovie.Poster}")` }));
+      } else {
+        setState((state) => ({...state, imgUrl: getImgUrl(props.posterPath) }));
       }
     } 
-    getMovieByName();
+    getByExternalId(props.movieId);
+    // async function getMovieByName() {
+    //   const gottenMovie = await service.getByMovieName(props.movieName);
+    //   if (!gottenMovie.Poster) {
+    //     setState((state) => ({...state, imgUrl: getImgUrl(props.posterPath) }));
+    //   } else {
+    //     setState((state) => ({...state, imgUrl: `url("${gottenMovie.Poster}")` }));
+    //   }
+    // } 
+    // getMovieByName();
   }, [props.movieName, props.posterPath]);
 
   return (

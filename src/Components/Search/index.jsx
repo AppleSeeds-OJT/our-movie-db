@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
     realTimeSearchRes: {
         position: `absolute`,
-        width: 200,
+        width: 230,
         backgroundColor: `#524763`,
     }
 }));
@@ -33,18 +33,21 @@ function Search() {
                 const movies = service.searchByKeyword('movies', term);
                 Promise.all([actors, movies])
                 .then((results) => {
-                    console.log('these are the RAW combined results: ', results)
+                    // console.log('these are the RAW combined results: ', results)
                     const actorArr = results[0].results.slice(0,2);
-                    const movieArr = results[1].results.slice(0,4);
-                    const combinedSearchResults = actorArr.concat(movieArr);
-                    console.log('these are the SHORTENED combined results: ', combinedSearchResults);
-                    setState(state => ({ ...state, searchHits: combinedSearchResults }))
+                    const movieArr = results[1].Search.slice(0,4);
+                    let combinedSearchResults = [];
+                    const getMovieDetails = async () => {
+                        return Promise.all(movieArr.map(movie => service.getMovieFromOMDBByIMDBId(movie.imdbID)))
+                    }
+                    const detailedMovieArr = getMovieDetails()
+                    .then(results => {
+                        // console.log('these are the fullyDetailed 4 movies: ', results)
+                        combinedSearchResults = actorArr.concat(results)
+                        // console.log('these are the SHORTENED combined results: ', combinedSearchResults);
+                        setState(state => ({ ...state, searchHits: combinedSearchResults }))
+                    })
                 });
-                //   service.searchByKeyword(term)
-                //   .then((result) => {
-                //       console.log('these are the results', result.results);
-                //       setState((state) => ({ ...state, searchHits: result.results }))
-                // })
               }, 1500)
           }
           delaySearch(state.searchTerm);
@@ -67,7 +70,7 @@ const setSearchTerm = (term) => {
         {state.searchHits.length > 0 && <div className={classes.realTimeSearchRes}>
             <div>{state.searchHits.map((hit, index) => (
                 <div key={index} >
-                    <HitPreview isMovie={(!hit.gender) ? true : false} hitId={hit.id}/>
+                    <HitPreview isMovie={(!hit.gender) ? true : false} movieInfo={(hit.imdbID) ? hit : {}} hitId={(hit.id) ? hit.id : {}}/>
                 </div>
             ))}</div>
         </div>}

@@ -5,9 +5,10 @@ export default {
     getById,
     getByMovieName,
     getFiveRandomMovies,
-    searchByKeyword
+    searchByKeyword,
+    getExternalId,
+    getMovieFromOMDBByIMDBId
     // getById,
-    // getExternalId
 }
 
 // ohad's TMDB API Key:
@@ -41,10 +42,10 @@ function query(what) { // this fetches first 20 most popuplar movies from TMDB.
     }
 }
 
-// function getExternalId(TMDBid) { // this fetches the IMDB-ID of a specific movie from TMDB.
-//     // example API string: https://api.themoviedb.org/3/movie/{movie_id}/external_ids?api_key=e5a2122bd03016f587131ffe3ecc2596
-//     return httpService.get(`${BASE_URL_TMDB}movie/${TMDBid}/external_ids?api_key=${API_KEY_TMDB}`);
-// }
+function getExternalId(TMDBid) { // this fetches the IMDB-ID of a specific movie from TMDB.
+    // example API string: https://api.themoviedb.org/3/movie/{movie_id}/external_ids?api_key=e5a2122bd03016f587131ffe3ecc2596
+    return httpService.get(`${BASE_URL_TMDB}movie/${TMDBid}/external_ids?api_key=${API_KEY_TMDB}`);
+}
 
 function getById(what, id) { // this fetches more movie/actor details from TMDB, based on the ID.
     if (what === 'movie') {
@@ -56,10 +57,13 @@ function getById(what, id) { // this fetches more movie/actor details from TMDB,
     } 
 }
 
+function getMovieFromOMDBByIMDBId(IMDBid) { // this fetches more movie details from OMDB, based on the IMDB-ID.
+    // example API string by IMDB-ID: http://www.omdbapi.com/?i=tt3896198&apikey=9fadc571
+    return httpService.get(`${BASE_URL_OMDB}?i=${IMDBid}&apikey=${API_KEY_OMDB}`);
+}
 
-// function getMovieById(IMDBid) { // this fetches more movie details from OMDB, based on the IMDB-ID.
-//     // example API string by IMDB-ID: http://www.omdbapi.com/?i=tt3896198&apikey=9fadc571
-//     return httpService.get(`${BASE_URL_OMDB}?i=${IMDBid}&apikey=${API_KEY_OMDB}`);
+// function getMoviesFromOMDB(term){
+//     http://www.omdbapi.com/?s=Batman&apikey=9fadc571&page=1
 // }
 
 function getByMovieName(movieName) { // this fetches more movie details from OMDB, based on the movie's name.
@@ -75,8 +79,11 @@ function searchByKeyword(what, keyword){
         // https://api.themoviedb.org/3/search/person?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&query=adam&page=1&include_adult=false <-- searches in People
         return httpService.get(`${BASE_URL_TMDB}search/person?api_key=${API_KEY_TMDB}&language=en-US&query=${keyword}&page=1&include_adult=false`);
     } else if (what === 'movies') {
-        // https://api.themoviedb.org/3/search/keyword?api_key=e5a2122bd03016f587131ffe3ecc2596&query=as&page=1 <-- searches in Movies
-        return httpService.get(`${BASE_URL_TMDB}search/keyword?api_key=${API_KEY_TMDB}&query=${keyword}&page=1`);
+        // // https://api.themoviedb.org/3/search/keyword?api_key=e5a2122bd03016f587131ffe3ecc2596&query=as&page=1 <-- searches in Movies, but TMDB provies very poor results...
+        // return httpService.get(`${BASE_URL_TMDB}search/keyword?api_key=${API_KEY_TMDB}&query=${keyword}&page=1`);
+        // http://www.omdbapi.com/?s=Batman&apikey=9fadc571&page=1 <-- so going with the OMDB movieFinder option
+        return httpService.get(`${BASE_URL_OMDB}?s=${keyword}&apikey=${API_KEY_OMDB}&page=1`);
+
     }
     // https://api.themoviedb.org/3/search/multi?api_key=e5a2122bd03016f587131ffe3ecc2596&language=en-US&query=adam%20sandler&page=1&include_adult=false <-- searches "multi" (TV/movies/actors)
     // return httpService.get(`${BASE_URL_TMDB}search/multi?api_key=${API_KEY_TMDB}&language=en-US&query=${keyword}&page=1&include_adult=false`);
