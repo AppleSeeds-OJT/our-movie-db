@@ -4,6 +4,7 @@ import { Box } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import Rating from "../../Components/Rating/index"
 import Actor from "../../Components/Actor/index"
+import Favorite from "../../Components/Favorite/index"
 import service from "../../Services/service";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: `4px 0px 5px 0px rgba(0,0,0,0.75)`
   },
   backdrop: {
+    position: `relative`,
     height: 400,
     backgroundImage: (state) => state.imgUrl,
     backgroundRepeat: `no-repeat`,
@@ -71,11 +73,15 @@ const useStyles = makeStyles((theme) => ({
   marginLeft: {
     marginLeft: 10
   },
+  favorite:{
+    position: `absolute`,
+    top: 10,
+    left: 10
+  }
 }));
 
-function MovieDetails() {
+function MovieDetails(props) {
   const { id } = useParams();
-  console.log(id); // why is this happening more than once !?!?
   const [state, setState] = useState({
     currMovie: null,
     tagline: null,
@@ -108,6 +114,9 @@ function MovieDetails() {
       {state.currMovie && <div>
         <div className={classes.body}>
           <div className={classes.backdrop}>
+            <div className={classes.favorite}>
+              <Favorite favMovies={props.favMovies} onToggleIsFavorite={props.onToggleIsFavorite} movieId={state.currMovie.imdbID} />
+            </div>
             <div className={classes.movieInfo}>
               <div className={classes.title}>
                 <div>{state.currMovie.Title} </div>

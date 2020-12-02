@@ -3,7 +3,7 @@ import { useHistory} from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import StarIcon from '@material-ui/icons/Star';
-import MovieIcon from '@material-ui/icons/Movie';
+import TheatersIcon from '@material-ui/icons/Theaters';
 import PersonIcon from '@material-ui/icons/Person';
 import service from "../../Services/service";
 
@@ -99,7 +99,7 @@ function Search(props) {
             <div className={classes.details}>   
                 <Box className={classes.title} fontSize={14} textAlign="left">{state.currItem.Title}</Box>
                 <div className={classes.flex}>
-                    <MovieIcon className={classes.icon}></MovieIcon>
+                    <TheatersIcon className={classes.icon}></TheatersIcon>
                     <Box fontSize={14}>{state.currItem.Year}</Box>
                 </div>
                 <div className={classes.flex}>

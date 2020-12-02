@@ -16,9 +16,10 @@ const useStyles = makeStyles((theme) => ({
         alignItems: `center`,
         justifyContent: `space-between`
     },
-    home: {
+    link: {
         fontWeight: `bold`,
-        cursor: `pointer`
+        cursor: `pointer`,
+        color: `white`
     }
   }));
 
@@ -28,9 +29,10 @@ function Navbar() {
 
   return (
     <div className={classes.navbar}>
-        <div className={classes.home} onClick={() => history.push(`/`)}>Our-MovieDB</div>
-        <div>SignIn</div>
-        <div>Settings</div>
+        <div className={classes.link} onClick={() => history.push(`/`)}>Our-MovieDB</div>
+        <div>Favorites</div>
+        {/* <div className={classes.link} onClick={() => history.push(`/favmovies/`)}>Favorites</div> */}
+        <div>Sign In</div>
         <div>ColorChange</div>
         <div><Search /></div>
     </div>

@@ -44,7 +44,7 @@ function Search() {
                         setState(state => ({ ...state, searchHits: combinedSearchResults }))
                     })
                 });
-              }, 1500)
+              }, 1000)
           }
           delaySearch(state.searchTerm);
           return () => clearTimeout(delay)
