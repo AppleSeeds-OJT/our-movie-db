@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Home() {
+function Home(props) {
   const classes = useStyles();
   const [state, setState] = useState({
     movies: [],
@@ -87,7 +87,16 @@ function Home() {
         </div>
         <div className={classes.cardContainer}>
           {state.movies.map((movie, index) => (
-            <MovieCard key={index} movieId={movie.id} movieReleaseYear={getReleaseYear(movie.release_date)} movieRating={movie.vote_average} movieName={movie.original_title} posterPath={movie.poster_path} />
+            <MovieCard 
+              key={index} 
+              movieId={movie.id} 
+              movieReleaseYear={getReleaseYear(movie.release_date)} 
+              movieRating={movie.vote_average} 
+              movieName={movie.original_title} 
+              posterPath={movie.poster_path}
+              favMovies={props.favMovies}
+              onToggleIsFavorite={props.onToggleIsFavorite} 
+             />
           ))}
         </div>
       </div>

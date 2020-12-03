@@ -24,26 +24,3 @@ function saveToLocalStorage(movieId) {
     localStorage.setItem('favoriteMovies', JSON.stringify(newFavMovieArr));
   }
 }
-    // let jsonrecipes = JSON.parse(localStorage.getItem('savedMovies'));
-    // if(jsonrecipes) {
-    //   const recipeExists = jsonrecipes.find(element => element.recipe.label === label);
-    //   if (!recipeExists) {
-    //     jsonrecipes.push({'recipe':recipe});
-    //     localStorage.setItem('savedRecipes', JSON.stringify(jsonrecipes));
-    //   } else {
-    //     alert('You already saved this recipe :)');
-    //   }
-    // } else {
-    //   let newSavedRecipes = [{'recipe':recipe}];
-    //   localStorage.setItem('savedRecipes', JSON.stringify(newSavedRecipes));
-    // }
-    // const [savedRecipes, setSavedRecipes] = useState([]);
-      // useEffect(() => {
-        // let jsonrecipes = JSON.parse(localStorage.getItem('savedRecipes'));
-        // if(jsonrecipes) {
-        //   setSavedRecipes(jsonrecipes);
-        // }
-      // },[]);   
-      // if(!savedRecipes.length){
-      //   return 'Loading Saved Recipes, Please Wait...'
-      // }

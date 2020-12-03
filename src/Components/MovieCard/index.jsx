@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory} from 'react-router-dom'
 import { makeStyles } from "@material-ui/core/styles";
 import {Card, Button} from "@material-ui/core";
+import Favorite from "../../Components/Favorite/index"
 import StarIcon from '@material-ui/icons/Star';
 import service from "../../Services/service";
 
@@ -124,8 +125,11 @@ function MovieCard(props) {
           </div>
       </Card>
       <Card className={`${classes.movieCard} ${classes.back}`}>
-          <Button className={classes.detailsBtn} variant="contained" color="primary" onClick={() => history.push(`/movie/${state.imdbId}`)}>Details</Button>
+          <Button className={classes.detailsBtn} variant="contained" color="primary" onClick={() => history.push(`/movie/${state.imdbId}`)}>
+            Details
+          </Button>
           <div className={classes.title}>
+            <Favorite favMovies={props.favMovies} onToggleIsFavorite={props.onToggleIsFavorite} movieId={state.imdbId} />
             <div>{props.movieName}</div>
           </div>
       </Card>

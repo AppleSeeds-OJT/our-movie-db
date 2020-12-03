@@ -60,7 +60,7 @@ const setSearchTerm = (term='') => {
   return (
     <div className={classes.searchBar}>
         <form>
-            <input className="" placeholder="search all" type="text" value={state.searchTerm} onChange={(ev)=> setSearchTerm(ev.target.value)} />)
+            <input className="" placeholder="search all" type="text" value={state.searchTerm} onChange={(ev)=> setSearchTerm(ev.target.value)} />
             <input type="submit" value="Submit" />
         </form>
         {state.searchHits.length > 0 && <div className={classes.realTimeSearchRes}>
