@@ -35,7 +35,7 @@ function App() {
     <div className="App">
       <Navbar />
       <Switch>
-        <Route exact path="/" render={() => (<Home />)} />
+        <Route exact path="/" render={() => (<Home onToggleIsFavorite={toggleIsFavorite} favMovies={state.favoriteMovies} />)} />
         <Route exact path="/favmovies/" render={() => (<FavoriteMovies onToggleIsFavorite={toggleIsFavorite} favMovies={state.favoriteMovies} />)} />
         <Route exact path="/movie/:id" render={() => (<MovieDetails onToggleIsFavorite={toggleIsFavorite} favMovies={state.favoriteMovies} />)} />
         <Route exact path="/actor/:id" render={() => (<ActorDetails />)} />

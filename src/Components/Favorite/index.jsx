@@ -32,12 +32,8 @@ function Favorite(props) {
     }
   }, [props.favMovies, props.movieId]);
 
-  const toggleFavorite = (movieId) => {
-    props.onToggleIsFavorite(movieId);
-  }
-
   return (
-    <div className={classes.cursor} onClick={() => toggleFavorite(state.currMovieId)}>
+    <div className={classes.cursor} onClick={() => props.onToggleIsFavorite(state.currMovieId)}>
       {(state.isFavorite) ? <FavoriteIcon className={classes.favorite}></FavoriteIcon> : <FavoriteBorderIcon></FavoriteBorderIcon> }
     </div>
   );
