@@ -28,21 +28,28 @@ function Search() {
           let delay = null;
           function delaySearch(term) {
               delay = setTimeout(() => {
-                const actors = service.searchByKeyword('actors', term); //need to handle cases where nothing is found at all...
-                const movies = service.searchByKeyword('movies', term); //need to handle cases where nothing is found at all...
+                const actors = service.searchByKeyword('actors', term);
+                const movies = service.searchByKeyword('movies', term);
                 Promise.all([actors, movies])
                 .then((results) => { // trying to move this out into service.js... so far unsuccessfully...
-                    const actorArr = results[0].results.slice(0,2);
-                    const movieArr = results[1].Search.slice(0,4);
-                    let combinedSearchResults = [];
-                    const getMovieDetails = async () => {
-                        return Promise.all(movieArr.map(movie => service.getMovieFromOMDBByIMDBId(movie.imdbID)))
+                    let actorArr;
+                    let movieArr;
+                    if (results[0].results) {
+                        actorArr = results[0].results.slice(0,2);
+                    } 
+                    if (results[1].Search) {
+                        movieArr = results[1].Search.slice(0,4);
+                        let combinedSearchResults = [];
+                        const getMovieDetails = async () => {
+                            return Promise.all(movieArr.map(movie => service.getMovieFromOMDBByIMDBId(movie.imdbID)))
+                        }
+                        getMovieDetails()
+                        .then(results => {
+                            combinedSearchResults = actorArr.concat(results)
+                            console.log('these are the combined results: ', combinedSearchResults);
+                            setState(state => ({ ...state, searchHits: combinedSearchResults }))
+                        })
                     }
-                    getMovieDetails()
-                    .then(results => {
-                        combinedSearchResults = actorArr.concat(results)
-                        setState(state => ({ ...state, searchHits: combinedSearchResults }))
-                    })
                 });
               }, 1000)
           }
