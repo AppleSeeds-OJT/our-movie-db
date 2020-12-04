@@ -46,7 +46,6 @@ function Search() {
                         getMovieDetails()
                         .then(results => {
                             combinedSearchResults = actorArr.concat(results)
-                            console.log('these are the combined results: ', combinedSearchResults);
                             setState(state => ({ ...state, searchHits: combinedSearchResults }))
                         })
                     }
