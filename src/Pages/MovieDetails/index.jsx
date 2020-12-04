@@ -134,7 +134,7 @@ function MovieDetails(props) {
               </div>
             </div>
           </div>
-          <Box className={classes.tagline} fontSize="h4.fontSize" fontStyle="italic" fontWeight="fontWeightBold">"{state.tagline}"</Box>
+          {state.tagline && <Box className={classes.tagline} fontSize="h4.fontSize" fontStyle="italic" fontWeight="fontWeightBold">"{state.tagline}"</Box>}
           <Box className={classes.plot} fontSize="h6.fontSize" fontWeight="fontWeightRegular">{state.currMovie.Plot}</Box>
           <div className={classes.actorsContainer}>
             {formattedActorList().map((actor, index) => (
