@@ -31,8 +31,8 @@ function Navbar() {
     <div className={classes.navbar}>
         <div className={classes.link} onClick={() => history.push(`/`)}>Our-MovieDB</div>
         <div className={classes.link} onClick={() => history.push(`/favmovies/`)}>Favorites</div>
-        <div>Sign In</div>
-        <div>ColorChange</div>
+        {/* <div>Sign In</div>
+        <div>ColorChange</div> */}
         <div><Search /></div>
     </div>
   );
