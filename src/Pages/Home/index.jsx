@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box } from '@material-ui/core';
+import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MovieCard from "../../Components/MovieCard/index";
 import NowPlayingCarousel from "../../Components/NowPlayingCarousel/index";
@@ -13,14 +13,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
     display: `flex`,
     flexDirection: `column`,
-    alignItems: `center`
+    alignItems: `center`,
   },
   title: {
     color: `white`,
-    marginTop: 20
+    marginTop: 20,
   },
   subtitle: {
-    color: `aqua`
+    color: `aqua`,
   },
   cardContainer: {
     padding: 20,
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     width: `25%`,
     display: `flex`,
     justifyContent: `space-between`,
-    margin: `20px 0`
+    margin: `20px 0`,
   },
   queryBtn: {
     cursor: `pointer`,
@@ -41,24 +41,24 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid aqua`,
     padding: `5px 10px`,
     transition: `all .3s`,
-    '&:hover': {
+    "&:hover": {
       color: `black`,
       backgroundColor: `aqua`,
-      transition: `all .3s`
-    }
-  }
+      transition: `all .3s`,
+    },
+  },
 }));
 
 function Home(props) {
   const classes = useStyles();
   const [state, setState] = useState({
     movies: [],
-    moviesToShow: 'popular'
+    moviesToShow: "popular",
   });
 
   useEffect(() => {
     async function getMovies(moviesToShow) {
-      const gottenMovies = await service.query(moviesToShow)
+      const gottenMovies = await service.query(moviesToShow);
       setState((state) => ({ ...state, movies: gottenMovies.results }));
     }
     getMovies(state.moviesToShow);
@@ -66,37 +66,89 @@ function Home(props) {
 
   const moviesToShow = (param) => {
     setState((state) => ({ ...state, moviesToShow: param }));
-  }
+  };
 
   const getReleaseYear = (releaseDate) => {
-    return releaseDate.slice(0, 4)
-  }
+    if (releaseDate) {
+      return releaseDate.slice(0, 4);
+    } else {
+      return "TBD";
+    }
+  };
 
   return (
     <div className={classes.homePage}>
       <NowPlayingCarousel />
       <div>
         <div className={classes.intro}>
-          <Box className={classes.title} fontSize="h4.fontSize" fontWeight="fontWeightBold">Welcome to Our Movie Database</Box>
-          <Box className={classes.subtitle} fontSize="h5.fontSize" fontWeight="fontWeightMedium">Discover and Watch</Box>
+          <Box
+            className={classes.title}
+            fontSize="h4.fontSize"
+            fontWeight="fontWeightBold"
+          >
+            Welcome to Our Movie Database
+          </Box>
+          <Box
+            className={classes.subtitle}
+            fontSize="h5.fontSize"
+            fontWeight="fontWeightMedium"
+          >
+            Discover and Watch
+          </Box>
           <div className={classes.queryType}>
-            <div className={classes.queryBtn} onClick={() => { moviesToShow('popular') }} style={ state.moviesToShow === 'popular' ? {backgroundColor:'aqua', color: 'black'} : {}}>Popular</div>
-            <div className={classes.queryBtn} onClick={() => { moviesToShow('trending') }} style={ state.moviesToShow === 'trending' ? {backgroundColor:'aqua', color: 'black'} : {}}>Trending</div>
-            <div className={classes.queryBtn} onClick={() => { moviesToShow('latest') }} style={ state.moviesToShow === 'latest' ? {backgroundColor:'aqua', color: 'black'} : {}}>Latest</div>
+            <div
+              className={classes.queryBtn}
+              onClick={() => {
+                moviesToShow("popular");
+              }}
+              style={
+                state.moviesToShow === "popular"
+                  ? { backgroundColor: "aqua", color: "black" }
+                  : {}
+              }
+            >
+              Popular
+            </div>
+            <div
+              className={classes.queryBtn}
+              onClick={() => {
+                moviesToShow("trending");
+              }}
+              style={
+                state.moviesToShow === "trending"
+                  ? { backgroundColor: "aqua", color: "black" }
+                  : {}
+              }
+            >
+              Trending
+            </div>
+            <div
+              className={classes.queryBtn}
+              onClick={() => {
+                moviesToShow("latest");
+              }}
+              style={
+                state.moviesToShow === "latest"
+                  ? { backgroundColor: "aqua", color: "black" }
+                  : {}
+              }
+            >
+              Latest
+            </div>
           </div>
         </div>
         <div className={classes.cardContainer}>
           {state.movies.map((movie, index) => (
-            <MovieCard 
-              key={index} 
-              movieId={movie.id} 
-              movieReleaseYear={getReleaseYear(movie.release_date)} 
-              movieRating={movie.vote_average} 
-              movieName={movie.original_title} 
+            <MovieCard
+              key={index}
+              movieId={movie.id}
+              movieReleaseYear={getReleaseYear(movie.release_date)}
+              movieRating={movie.vote_average}
+              movieName={movie.original_title}
               posterPath={movie.poster_path}
               favMovies={props.favMovies}
-              onToggleIsFavorite={props.onToggleIsFavorite} 
-             />
+              onToggleIsFavorite={props.onToggleIsFavorite}
+            />
           ))}
         </div>
       </div>
@@ -105,4 +157,3 @@ function Home(props) {
 }
 
 export default Home;
-
